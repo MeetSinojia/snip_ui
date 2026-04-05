@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    background: #0a0a0a;
+    color: #e8e8e8;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: #c8f135;
+    color: #0a0a0a;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+  }
+}
+
+@layer components {
+  /* Grid line overlay — editorial texture */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Scanline texture on hover */
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+  .scanline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .scanline:hover::after {
+    opacity: 1;
+  }
+
+  /* Acid accent underline */
+  .acid-underline {
+    position: relative;
+  }
+  .acid-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #c8f135;
+    transition: width 0.3s ease;
+  }
+  .acid-underline:hover::after {
+    width: 100%;
+  }
+
+  /* Input base */
+  .input-base {
+    @apply w-full bg-ink-800 border border-ink-600 text-ink-50 font-mono text-sm
+           px-4 py-3 outline-none transition-all duration-200
+           placeholder:text-ink-400;
+  }
+  .input-base:focus {
+    border-color: #c8f135;
+    box-shadow: 0 0 0 1px #c8f135;
+  }
+
+  /* Btn primary */
+  .btn-primary {
+    @apply bg-acid text-ink-900 font-body font-medium px-6 py-3
+           text-sm tracking-wide transition-all duration-150
+           hover:brightness-110 active:scale-95;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Btn ghost */
+  .btn-ghost {
+    @apply border border-ink-600 text-ink-200 font-body text-sm px-4 py-2
+           transition-all duration-150 hover:border-acid hover:text-acid;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-ink-800 border border-ink-600;
+  }
+
+  /* Label */
+  .label {
+    @apply text-ink-400 font-mono text-xs tracking-widest uppercase;
+  }
+
+  /* Stat value */
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    @apply text-5xl text-ink-50 leading-none;
+  }
+}
+
+/* Fade-up animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 0.4s ease forwards;
+}
+.fade-up-1 { animation-delay: 0.05s; opacity: 0; }
+.fade-up-2 { animation-delay: 0.12s; opacity: 0; }
+.fade-up-3 { animation-delay: 0.20s; opacity: 0; }
+.fade-up-4 { animation-delay: 0.28s; opacity: 0; }
+
+/* Pulse dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.pulse-dot {
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+/* Blink cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.blink {
+  animation: blink 1s step-end infinite;
+}
