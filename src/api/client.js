@@ -17,17 +17,41 @@ export const getAnalytics = (shortCode) =>
 export const deactivateUrl = (shortCode) =>
   api.delete(`/urls/${shortCode}`)
 
-// ── Local history (no backend needed) ───────────────────────────────────────
+// ── Debug / Redis Console endpoints ─────────────────────────────────────────
+
+/**
+ * GET /api/debug/config
+ * Returns rate-limit config values from application.yml:
+ *   { capacity, refillRate, windowSeconds, source }
+ * Never throws — returns null on error so UI can show fallback.
+ */
+export const getRateLimitConfig = () =>
+  api.get('/debug/config').then(r => r.data).catch(() => null)
+
+/** Returns current token-bucket snapshot for the caller's IP */
+export const getRateStatus = () =>
+  api.get('/debug/rate-status').then(r => r.data)
+
+/**
+ * Fires one synthetic request through the real rate-limit check.
+ * Resolves even on 429 so callers don't need a catch for the simulator.
+ */
+export const simulateRequest = () =>
+  api.post('/debug/simulate-request').then(r => r.data)
+    .catch(err => err.response?.data ?? { allowed: false, httpStatus: 429 })
+
+/** Clears the caller's token bucket */
+export const resetRateLimit = () =>
+  api.delete('/debug/reset-rate-limit').then(r => r.data)
+
+// ── Local history ────────────────────────────────────────────────────────────
 
 const HISTORY_KEY = 'snip_history'
 const MAX_HISTORY  = 8
 
 export const getHistory = () => {
-  try {
-    return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')
-  } catch {
-    return []
-  }
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]') }
+  catch { return [] }
 }
 
 export const addToHistory = (entry) => {
