@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/api': 'http://localhost:8080',
+      '/api': 'https://snip-backend-52kc.onrender.com/',
       // proxy redirect requests to backend too
     }
   }
